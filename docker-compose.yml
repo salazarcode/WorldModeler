@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  worldmodeler:
+    container_name: worldmodeler_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CONFIGURATION: Debug
+    ports:
+      - "3001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

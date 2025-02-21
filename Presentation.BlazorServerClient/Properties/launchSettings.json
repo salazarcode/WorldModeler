@@ -18,6 +18,18 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      },
+      "docker-compose": {
+        "commandName": "DockerCompose",
+        "dockerComposeFile": [
+          "../../docker-compose.yml"
+        ],
+        "service": "worldmodeler",
+        "launchBrowser": true,
+        "launchUrl": "http://localhost:3001",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
       }
     }
   }

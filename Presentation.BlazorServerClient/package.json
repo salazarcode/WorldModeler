@@ -1,0 +1,21 @@
+{
+  "name": "presentation.blazorserverclient",
+  "version": "1.0.0",
+  "description": "Frontend application of WorldModeler",
+  "main": "index.js",
+  "scripts": {
+    "buildcss": "postcss wwwroot/css/app.css -o wwwroot/css/app.min.css"
+  },
+  "author": "salazarcode@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "3.4.17"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.23",
+    "eslint": "^9.20.1"
+  }
+}
