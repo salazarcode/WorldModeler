@@ -1,0 +1,105 @@
+@page "/calculator"
+@using System.Globalization
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-4 text-center">Calculadora de Ecuación Cuadrática</h1>
+        <EditForm Model="model" OnValidSubmit="CalculateQuadratic" FormName="CalculatorForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Valor de a:</label>
+                <InputNumber @bind-Value="model.CoefficientA" class="mt-1 p-2 border rounded w-full" step="any"/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Valor de b:</label>
+                <InputNumber @bind-Value="model.CoefficientB" class="mt-1 p-2 border rounded w-full" step="any"/>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Valor de c:</label>
+                <InputNumber @bind-Value="model.CoefficientC" class="mt-1 p-2 border rounded w-full" step="any"/>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                Calcular
+            </button>
+        </EditForm>
+        @if (CalculationDone)
+        {
+            <div class="mt-6 p-4 bg-gray-50 rounded border">
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <p class="text-red-500 text-center">@ErrorMessage</p>
+                }
+                else
+                {
+                    <p class="text-center">@DisplayResult</p>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    public class QuadraticModel
+    {
+        public double? CoefficientA { get; set; }
+
+        public double? CoefficientB { get; set; }
+        public double? CoefficientC { get; set; }
+    }
+    private QuadraticModel model = new QuadraticModel();
+
+    private bool CalculationDone = false;
+    private string? DisplayResult;
+    private string? ErrorMessage;
+
+    private void CalculateQuadratic()
+    {
+        // Reiniciar mensajes
+        CalculationDone = false;
+        ErrorMessage = null;
+        DisplayResult = null;
+
+        // Validar que se hayan ingresado todos los valores (la validación de DataAnnotations ya lo haría, pero lo dejamos para lógica de negocio)
+        if (model.CoefficientA == null || model.CoefficientB == null || model.CoefficientC == null)
+        {
+            ErrorMessage = "Por favor, complete todos los valores.";
+            CalculationDone = true;
+            return;
+        }
+
+        // El coeficiente 'a' no puede ser cero en una ecuación cuadrática
+        if (model.CoefficientA == 0)
+        {
+            ErrorMessage = "El coeficiente 'a' no puede ser 0 en una ecuación cuadrática.";
+            CalculationDone = true;
+            return;
+        }
+
+        double a = model.CoefficientA.Value;
+        double b = model.CoefficientB.Value;
+        double c = model.CoefficientC.Value;
+
+        double discriminant = b * b - 4 * a * c;
+
+        if (discriminant > 0)
+        {
+            double root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            double root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            DisplayResult = $"Las raíces son: {root1.ToString("F2", CultureInfo.InvariantCulture)} y {root2.ToString("F2", CultureInfo.InvariantCulture)}";
+        }
+        else if (discriminant == 0)
+        {
+            double root = -b / (2 * a);
+            DisplayResult = $"La única raíz real es: {root.ToString("F2", CultureInfo.InvariantCulture)}";
+        }
+        else
+        {
+            ErrorMessage = "La ecuación no tiene raíces reales.";
+        }
+        CalculationDone = true;
+    }
+}

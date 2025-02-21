@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <Target Name="BuildTailwind" BeforeTargets="Build">
+    <Exec Command="npm run buildcss" WorkingDirectory="$(ProjectDir)" />
+  </Target>
+
   <ItemGroup>
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />
     <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
